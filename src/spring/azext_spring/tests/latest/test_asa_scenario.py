@@ -60,8 +60,6 @@ class ByosTest(ScenarioTest):
 
 class StartStopAscTest(ScenarioTest):
 
-    # Define the interval We have to wait to start or stop the instance again after an ASA service instance been stopped or started successfully.
-    # The interval is configured as 5 minutes in Dogfood east us, the default interval is 30 miniutes.
     SERVICE_START_AND_STOP_INTERVAL = 300
     
     @record_only()
