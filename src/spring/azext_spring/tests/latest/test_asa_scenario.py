@@ -60,6 +60,10 @@ class ByosTest(ScenarioTest):
 
 class StartStopAscTest(ScenarioTest):
 
+    # Define the interval We have to wait to start or stop the instance again after an ASA service instance been stopped or started successfully.
+    # The interval is configured as 5 minutes in Dogfood east us, the default interval is 30 miniutes.
+    SERVICE_START_AND_STOP_INTERVAL = 300
+    
     @record_only()
     @SpringResourceGroupPreparer(dev_setting_name=SpringTestEnvironmentEnum.STANDARD_START_STOP['resource_group_name'])
     @SpringPreparer(**SpringTestEnvironmentEnum.STANDARD_START_STOP['spring'])
@@ -75,6 +79,8 @@ class StartStopAscTest(ScenarioTest):
             self.check('properties.powerState', 'Stopped')
         ])
 
+        sleep(StartStopAscTest.SERVICE_START_AND_STOP_INTERVAL)
+        
         self.cmd('spring start -n {serviceName} -g {resource_group}')
         self.cmd('spring show --name {serviceName} -g {resource_group}', checks=[
             self.check('properties.provisioningState', 'Succeeded'),
